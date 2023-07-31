@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
+    <title>Document</title>
+	<style>
+			#app {width:20%;margin:2rem auto; position:relative;}
+	* {box-sizing:border-box;}
+	li {list-style:none;}	  
+	button {position:absolute;right:0; color:gray;font-weight:bold;
+	           background:none; border:none;}
+input[type="text"] {    width: 84%; height:30px;}
+.btn {color:red;}
+.bb {position:absolute;top:5px;}
+	</style>
+</head>
+<body>
+  <!--
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> 에서
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>로 .min.을 붙여 스크립트를 바꿔주면 된다.
+
+ 
+
+물론 코드 내부에서 import를 하려면
+
+ 
+
+import Vue from 'vue/dist/vue.js' 에서
+
+import Vue from 'vue/dist/vue.min.js' 로 변경하자.
+  -->
+
+    <div id="app">
+      <input type="text" v-model.trim='todoTitle' placeholder="할일명(2자이상)" @keydown.enter='addTodo()'>
+      <button class="bb" @click='addTodo()'>추가</button>
+      <ul>
+        <li v-for='(todo, key, index) in todoList ' :key='key'>
+ 	 {{ todo.title }}  <button   class="btn" @click='remove(key)'>&#9747;
+      </ul>
+    </div>
+    <!-- v-bind 디렉티브와 약어(:) -->
+    <!-- 
+          속성명을 가리키는 두 번째 별칭를 사용할 수도 있습니다:
+
+          template
+          <li v-for="(value, key) in myObject">
+            {{ key }}: {{ value }}
+          </li>
+          그리고 인덱스를 가리키는 세 번째 별칭를 사용할 수도 있습니다:
+
+          template
+          <li v-for="(value, key, index) in myObject">
+            {{ index }}. {{ key }}: {{ value }}
+          </li>
+
+     -->
+<script>
+const app = new Vue({
+  el: "#app",
+  data: {
+    nextId: 1,
+    todoTitle: "",
+    todoList: [
+      { id: 0, title: "sample data"}
+    ]
+  },
+  methods: {
+    addTodo: function(x){
+      if( this.todoTitle.length < 2) {
+        alert("할일명을 2자 이상 입력하세요");
+        return;
+      }
+      const now = new Date();
+      const newTodo = {
+        id: this.nextId,
+        title: this.todoTitle
+      }
+      this.todoList.push(newTodo);
+      this.nextId++;
+      this.todoTitle = "";
+    },
+    remove: function(key){
+      this.todoList.splice(key, 1);
+    }
+  }
+});
+    
+</script>
+</body>
+</html>
